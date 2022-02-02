@@ -1,0 +1,3 @@
+[submodule "music-theory"]
+	path = music-theory
+	url = https://github.com/aq-amani/music-theory
