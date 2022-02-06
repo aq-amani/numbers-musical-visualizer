@@ -5,6 +5,8 @@ Represent famous number sequences as colors and music
 ```bash
 pipenv install --ignore-pipfile --skip-lock --python 3.7
 pipenv shell
+submodule init
+submodule update
 ```
 If faced by "fluidsynth file not found" on some linux environment, try the following.
 ```bash
