@@ -52,46 +52,44 @@ color_map = {
 #    "G#" 	    : 285/360,
 #}
 
+def number_mapper_chromatic(number_list, start_note_name, start_octave, end_octave):
+    """Map a list of numbers to a list of notes on a, possibly multioctave, chromatic scale
+
     Arguments:
     number_list -- List of numbers to map
+    start_note_name -- name of note to start from for mapping
+    start_octave -- octave of starting note
+    end_octave -- octave of the ending note for mapping
     """
-    notename_list = []
-    for number in number_list:
-        mod = number % 12
-        target = note_list[mod]
-        print(f'{number} --> {mod}')
-        notename_list.append(target)
-    return notename_list
+    out_list = []
+    start_note = Note(start_note_name, start_octave)
+    mapping_targets = start_note.get_consecutive_notes(12 * (end_octave - start_octave + 1))
+    print(f'Mapping note range : {mapping_targets[0].name}{mapping_targets[0].octave} ~ {mapping_targets[-1].name}{mapping_targets[-1].octave}')
 
-def number_mapper_to_scale(number_list, scale_name, root_note_name, octave=4):
+    for number in number_list:
+        idx = number % len(mapping_targets)
+        out_list.append(mapping_targets[idx])
+    return out_list, mapping_targets
+
+def number_mapper_to_scale(number_list, scale_name, root_note_name, octave, length = None):
     """Map a list of numbers to a list of notes depending on mode
 
     Arguments:
     number_list -- List of numbers to map
+    scale_name -- Name of musical scale to use as mapping target
+    root_note_name -- Name of the root note of the scale
+    octave -- octave of the root note
+    length -- Specify for non-standard scale lengths(ex. when spanning multiple octaves). Defaults to standard scale length
     """
-    notename_list = []
-    scale_length = len(mt.all_scale_info[scale_name]['signature'])
-    scale_notes = mt.construct_scale(Note(root_note_name, octave), mt.all_scale_info[scale_name]['signature'])
+    out_list = []
+    scale_length = len(mt.all_scale_info[scale_name]['signature']) if not length else length
+    mapping_targets = mt.construct_scale(Note(root_note_name, octave), mt.all_scale_info[scale_name]['signature'], scale_length)
+    print('Mapping note range :')
+    print(*[n.name+str(n.octave) for n in mapping_targets], sep = ', ')
     for number in number_list:
-        target = scale_notes[number % scale_length].name
-        print(f'{number} --> {target}')
-        notename_list.append(target)
-    return notename_list
-
-
-
-
-def note_sequencer(notename_list, octave):
-    """Create a list of note objects
-
-    Arguments:
-    notename_list -- List of note names
-    octave -- octave to use for notes
-    """
-    note_list = []
-    for note in notename_list:
-        note_list.append(Note(note, octave))
-    return note_list
+        target = mapping_targets[number % scale_length]
+        out_list.append(target)
+    return out_list, mapping_targets
 
 def string_to_int_list(number_string):
     """Convert a string of numbers to a list of integers
@@ -103,13 +101,3 @@ def string_to_int_list(number_string):
     for c in number_string:
         int_list.append(int(c))
     return int_list
-
-def number_to_mod(number_list, mod):
-    """Map a list of numbers to a list of notes depending on mode
-
-    Arguments:
-    number_list -- List of numbers to map
-    """
-    for number in number_list:
-        target = number % mod
-        print(f'{number} --> {target}')
