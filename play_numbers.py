@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import threading
 import sys
-sys.path.append('../music-theory/')
+sys.path.append('./music-theory/')
 import colorsys
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
