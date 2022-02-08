@@ -4,36 +4,53 @@ import mt_toolbox as mt
 
 note_list = list(basic_notes)
 
+# Red at C
+#color_map = {
+#    "C" 		: (255,0,0),
+#    "C#" 		: (139,0,0),
+#    "D" 		: (255,128,0),
+#    "D#" 		: (205,133,0),
+#    "E" 	    : (255,255,0),
+#    "F" 		: (0,255,0),
+#    "F#" 		: (0,139,0),
+#    "G" 		: (0,0,255),
+#    "G#" 		: (0,0,139),
+#    "A" 		: (128,0,128),
+#    "A#" 		: (85,26,139),
+#    "B" 	    : (75,0,130),
+#}
+
+# Red at A (since red light frequency is 440THz
+# and sound frequency of A at 4th octave is 440Hz)
 color_map = {
-    "C" 		: (255,0,0),
-    "C#" 		: (139,0,0),
-    "D" 		: (255,128,0),
-    "D#" 		: (205,133,0),
-    "E" 	    : (255,255,0),
-    "F" 		: (0,255,0),
-    "F#" 		: (0,139,0),
-    "G" 		: (0,0,255),
-    "G#" 		: (0,0,139),
-    "A" 		: (128,0,128),
-    "A#" 		: (85,26,139),
-    "B" 	    : (75,0,130),
+    "A" 		: (255,0,0),
+    "A#" 		: (139,0,0),
+    "B" 		: (255,128,0),
+    "C" 		: (205,133,0),
+    "C#" 	    : (255,255,0),
+    "D" 		: (0,255,0),
+    "D#" 		: (0,139,0),
+    "E" 		: (0,0,255),
+    "F" 		: (0,0,139),
+    "F#" 		: (128,0,128),
+    "G" 		: (85,26,139),
+    "G#" 	    : (75,0,130),
 }
-
-def digit_mapper(digit_list):
-    """Map a list of digits to a list of notes
-
-    Arguments:
-    digit_list -- List of digits to map
-    """
-    notename_list = []
-    for digit in digit_list:
-        target = note_list[digit]
-        print(f'{digit} --> {target}')
-        notename_list.append(note_list[digit])
-    return notename_list
-
-def number_mapper_chromatic(number_list):
-    """Map a list of numbers to a list of notes depending on mode
+## Hue based color map. Red at A (max 360)
+#color_map = {
+#    "A" 		: 0/360, # R
+#    "A#" 		: 15/360, # orange red
+#    "B" 		: 30/360, # orange
+#    "C" 		: 60/360, # Yellow
+#    "C#" 	    : 90/360, # greenish yellow
+#    "D" 		: 120/360, # G
+#    "D#" 		: 150/360, # blueish green
+#    "E" 		: 180/360, # B
+#    "F" 		: 210/360, #
+#    "F#" 		: 240/360,
+#    "G" 		: 270/360,
+#    "G#" 	    : 285/360,
+#}
 
     Arguments:
     number_list -- List of numbers to map
