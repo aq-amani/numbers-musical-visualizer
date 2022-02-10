@@ -4,7 +4,6 @@ from matplotlib.animation import FuncAnimation
 import threading
 import sys
 sys.path.append('./music-theory/')
-import colorsys
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import argparse
@@ -22,6 +21,7 @@ max_visible_notes = 200
 #music parameters
 music_thread = threading.Thread(target=pb.play_midi_file, args=(pb.midi_filename,))
 mapped_notes = []
+mapped_colors = []
 map = []
 number_list = []
 #Text parameters
@@ -72,16 +72,7 @@ def refresh_graph(frame_number):
     plotted_notes['growth_rate'][current_index] = growth_rate
 
     # set circle color based on the corrospondong musical note
-    r,g,b = mp.color_map[mapped_notes[frame_number].name]
-    color = (r/255, g/255, b/255, 1)
-
-    # For HSV color mapping
-    #r,g,b = colorsys.hsv_to_rgb(mp.color_map[mapped_notes[frame_number].name], 1.0, 1.0)
-    #color = (r, g, b, 1)
-
-    # Different color shades according to octave
-    #octave =  mapped_notes[frame_number].octave
-    #color = (octave/7 * (r/255), octave/7 * (g/255), octave/7 * (b/255), 1)
+    color = mapped_colors[frame_number]
 
     plotted_notes['color'][current_index] = color
 
@@ -103,6 +94,7 @@ def main():
     global sequence_name
     global mapping_type
     global number_list
+    global mapped_colors
 
     parser = argparse.ArgumentParser(description='play_numbers.py: A script to visually and musically represent number sequences')
 
@@ -130,6 +122,8 @@ def main():
         mapped_notes, map = mp.number_mapper_chromatic(number_list, root_note, start_octave, end_octave)
     else:
         mapped_notes, map = mp.number_mapper_to_scale(number_list, mapping_type, root_note, start_octave, scale_length)
+
+    mapped_colors = mp.note_color_mapper(mapped_notes)
 
     pb.create_midi(mapped_notes, 'scale', t=1)
 

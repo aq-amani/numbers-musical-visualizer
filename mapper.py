@@ -101,3 +101,26 @@ def string_to_int_list(number_string):
     for c in number_string:
         int_list.append(int(c))
     return int_list
+
+def note_color_mapper(note_list):
+    """Maps note objects to colors
+
+    Arguments:
+    note_list -- list of note objects
+    """
+    # For HSV color mapping
+    #r,g,b = colorsys.hsv_to_rgb(mp.color_map[mapped_notes[frame_number].name], 1.0, 1.0)
+    #color = (r, g, b, 1)
+
+    # Different color shades according to octave
+    #octave =  mapped_notes[frame_number].octave
+    #color = (octave/7 * (r/255), octave/7 * (g/255), octave/7 * (b/255), 1)
+    color_list = []
+    for n in note_list:
+        if n.octave == 2:
+            color = (236/255, 236/255, 236/255, 1)
+        else:
+            r,g,b = color_map[n.name]
+            color = (r/255, g/255, b/255, 1)
+        color_list.append(color)
+    return color_list
