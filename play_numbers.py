@@ -119,7 +119,8 @@ def main():
     end_octave = args['endOctave']
     scale_length = args['scaleLength']
     backing = args['backing']
-    p_list = sq.number_sequences['Primes']['data']
+    condition_list = sq.number_sequences['Primes']['data']
+    backing_list = [i for i in range(0, condition_list[-1])]
 
 
     # TODO: handle end octave value VS scale length
@@ -127,7 +128,7 @@ def main():
         # Send a copy of list as pop operation modifies th original list
         # TODO: Find a better implementation
         number_list_copy = number_list[:]
-        mapped_notes, map = mp.number_mapper_to_scale_with_backing(number_list_copy, mapping_type, root_note, start_octave, p_list, [i for i in range(0, p_list[-1])], scale_length)
+        mapped_notes, map = mp.number_mapper_to_scale_with_backing(number_list_copy, mapping_type, root_note, start_octave, condition_list, backing_list, scale_length)
     else:
         mapped_notes, map = mp.number_mapper_to_scale(number_list, mapping_type, root_note, start_octave, scale_length)
 
