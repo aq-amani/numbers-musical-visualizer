@@ -72,7 +72,7 @@ def number_mapper_chromatic(number_list, start_note_name, start_octave, end_octa
     return out_list, mapping_targets
 
 def number_mapper_to_scale(number_list, scale_name, root_note_name, octave, length = None):
-    """Map a list of numbers to a list of notes depending on mode
+    """Map a list of numbers to a list of notes
 
     Arguments:
     number_list -- List of numbers to map
@@ -89,6 +89,31 @@ def number_mapper_to_scale(number_list, scale_name, root_note_name, octave, leng
     for number in number_list:
         target = mapping_targets[number % scale_length]
         out_list.append(target)
+    return out_list, mapping_targets
+
+def number_mapper_to_scale_with_backing(number_list, scale_name, root_note_name, octave, p_list, backing_list, length = None):
+    """Map a list of numbers to a list of notes with backing notes
+
+    Arguments:
+    number_list -- List of numbers to map
+    scale_name -- Name of musical scale to use as mapping target
+    root_note_name -- Name of the root note of the scale
+    octave -- octave of the root note
+    p_list -- Prime list to compare against
+    backing_list -- list to use as backing. Normally list of integers.
+    length -- Specify for non-standard scale lengths(ex. when spanning multiple octaves). Defaults to standard scale length
+    """
+    out_list = []
+    scale_length = len(mt.all_scale_info[scale_name]['signature']) if not length else length
+    mapping_targets = mt.construct_scale(Note(root_note_name, octave), mt.all_scale_info[scale_name]['signature'], scale_length)
+    print('Mapping note range :')
+    print(*[n.name+str(n.octave) for n in mapping_targets], sep = ', ')
+    for number in range(0,backing_list[-1]+1):
+        if number not in p_list:
+            out_list.append(Note('A', 2)) if number % 2 == 0 else out_list.append(Note('E', 2))
+        else:
+            idx = number_list.pop(0) % len(mapping_targets)
+            out_list.append(mapping_targets[idx])
     return out_list, mapping_targets
 
 def string_to_int_list(number_string):

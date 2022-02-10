@@ -104,6 +104,7 @@ def main():
     parser.add_argument('-s','--startOctave', choices=[i for i in range(0, 8)], help='Start note octave setting.', default = 4, type = int, metavar = '')
     parser.add_argument('-e','--endOctave', choices=[i for i in range(0, 8)], help='End note octave setting.', default = 4, type = int, metavar = '')
     parser.add_argument('-l','--scaleLength', help='End note octave setting.', default = 24, type = int, metavar = '')
+    parser.add_argument('-b','--backing', help='Play prime related sequences against a backing track created by all integers', action ='store_true')
 
     args = vars(parser.parse_args())
 
@@ -117,9 +118,16 @@ def main():
     start_octave = args['startOctave']
     end_octave = args['endOctave']
     scale_length = args['scaleLength']
+    backing = args['backing']
+    p_list = sq.number_sequences['Primes']['data']
 
-    if mapping_type == 'chromatic':
-        mapped_notes, map = mp.number_mapper_chromatic(number_list, root_note, start_octave, end_octave)
+
+    # TODO: handle end octave value VS scale length
+    if backing:
+        # Send a copy of list as pop operation modifies th original list
+        # TODO: Find a better implementation
+        number_list_copy = number_list[:]
+        mapped_notes, map = mp.number_mapper_to_scale_with_backing(number_list_copy, mapping_type, root_note, start_octave, p_list, [i for i in range(0, p_list[-1])], scale_length)
     else:
         mapped_notes, map = mp.number_mapper_to_scale(number_list, mapping_type, root_note, start_octave, scale_length)
 
@@ -128,6 +136,7 @@ def main():
     pb.create_midi(mapped_notes, 'scale', t=1)
 
     # init function used to avoid repeating the initial frame
+    # BPM = 60,000ms / interval(ms) (ex.: 150ms with 400BPM)
     animation = FuncAnimation(fig, refresh_graph, init_func = init_plot, interval=150, frames=len(mapped_notes), repeat = False)
     plt.show()
 
