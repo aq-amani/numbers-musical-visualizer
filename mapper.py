@@ -124,7 +124,13 @@ def string_to_int_list(number_string):
     """
     int_list = []
     for c in number_string:
-        int_list.append(int(c))
+        # Dozenal digits
+        if c == 'X':
+            int_list.append(10)
+        elif c == 'E':
+            int_list.append(11)
+        else:
+            int_list.append(int(c))
     return int_list
 
 def note_color_mapper(note_list):
