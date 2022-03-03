@@ -99,7 +99,7 @@ def main():
     parser = argparse.ArgumentParser(description='play_numbers.py: A script to visually and musically represent number sequences')
 
     parser.add_argument('-n','--sequenceName', choices=list(sq.number_sequences.keys()), help='Number sequence name', default = 'Pi', metavar = '')
-    parser.add_argument('-m','--mapping', choices=list(mt.all_scale_info.keys()).extend(['chromatic']),  help='Chromatic mapping or scale name for scale mapping', default = 'chromatic', metavar = '')
+    parser.add_argument('-m','--mapping', choices=list(mt.all_scale_info.keys()).extend(['Chromatic']),  help='Chromatic mapping or scale name for scale mapping', default = 'Chromatic', metavar = '')
     parser.add_argument('-r','--root', choices=list(mt.basic_notes.keys()), help='Scale root or note to start from', default = 'C', metavar = '')
     parser.add_argument('-s','--startOctave', choices=[i for i in range(0, 8)], help='Start note octave setting.', default = 4, type = int, metavar = '')
     parser.add_argument('-e','--endOctave', choices=[i for i in range(0, 8)], help='End note octave setting.', default = 4, type = int, metavar = '')
