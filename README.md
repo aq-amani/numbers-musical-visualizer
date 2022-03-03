@@ -8,9 +8,10 @@ pipenv shell
 git submodule init
 git submodule update --remote --merge
 ```
-If faced by "fluidsynth file not found" on some linux environment, try the following.
-```bash
-sudo apt-get install fluid-soundfont-gm
+Make sure the following packages are installed and edit `timidity.cfg` to use freepats as the default source config.
+```
+sudo apt-get install freepats
+sudo apt-get install timidity
 ```
 
 If faced by `UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.`
